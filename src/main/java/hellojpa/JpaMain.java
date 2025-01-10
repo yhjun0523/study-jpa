@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
+import java.util.List;
+
 public class JpaMain {
 
     public static void main(String[] args) {
@@ -17,22 +19,30 @@ public class JpaMain {
 
         try {
             // insert
-            Member member = new Member();
-            member.setId(2L);
-            member.setName("HelloB");
-
-            em.persist(member);
+//            Member member = new Member();
+//            member.setId(2L);
+//            member.setName("HelloB");
+//            em.persist(member);
 
             // select
-            Member findMember = em.find(Member.class, 1L);
-            System.out.println("findMember.getId() = " + findMember.getId());
-            System.out.println("findMember.getName() = " + findMember.getName());
+//            Member findMember = em.find(Member.class, 1L);
+//            System.out.println("findMember.getId() = " + findMember.getId());
+//            System.out.println("findMember.getName() = " + findMember.getName());
+
+            // jpql
+            List<Member> result = em.createQuery("select m from Member m", Member.class)
+                    .setFirstResult(1)
+                    .setMaxResults(10)
+                    .getResultList();
+            for (Member member : result) {
+                System.out.println("member.getName() = " + member.getName());
+            }
 
             // update
-            findMember.setName("HelloC");
+//            findMember.setName("HelloC");
 
             // delete
-            em.remove(findMember);
+//            em.remove(findMember);
 
             tx.commit();
         } catch (Exception e) {
